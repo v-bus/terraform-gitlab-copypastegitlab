@@ -22,3 +22,10 @@ module "gp_copy_paste" {
 }
 
 ```
+
+```bash
+curl -k --header "Authorization: Bearer $TOKEN"  https://gitlab.XXXXXXX.com/api/v4/groups/26/projects?per_page=100 | jq '.[] | .ssh_url_to_repo'
+
+curl -k --header "Authorization: Bearer $TOKEN"  https://gitlab.XXXXXXX.com/api/v4/groups?per_page=100 | jq '.[] | "\(.id) \(.full_path)"'
+
+```
