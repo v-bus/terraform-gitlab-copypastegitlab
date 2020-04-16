@@ -1,19 +1,18 @@
 variable "gitlab_src_token" {
-    description = "Source GitLab (from) personal access token"
-    type = string
+    description = "required: Source GitLab (from) personal access token"
+    default = ""
 }
 
 variable "gitlab_dst_token" {
-    description = "Destination GitLab (to) personal access token"
-    type = string
+    description = "required: Destination GitLab (to) personal access token"
+    default = ""
 }
 
 variable "gitlab_src_url" {
-    description = "Source GitLab (from) URL https://gitlab.mydomainA.com/api/v4/"
-type    = string
+    description = "required: Source GitLab (from) URL https://gitlab.mydomainA.com"
+default = ""
 }
-
 variable "gitlab_dst_url" {
-    description = "Destination GitLab (to) URL https://gitlab.mydomainB.com/api/v4/"
-type    = string
+    description = "required: Destination GitLab (to) URL https://gitlab.mydomainB.com"
+default = ""
 }
