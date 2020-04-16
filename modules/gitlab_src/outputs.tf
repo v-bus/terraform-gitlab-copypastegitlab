@@ -6,9 +6,19 @@ output "groups" {
 }
 output "projects" {
   value       = local.projects
-  description = "returns list of maps of progects { 'full_path' = 'group/subroup' 'path' = 'project' 'project_ssh' = 'git@gitlab.myserver.com:group/subroup/project.git'}"
+  description = "returns list of maps of projects { 'full_path' = 'group/subroup' 'path' = 'project' 'project_ssh' = 'git@gitlab.myserver.com:group/subroup/project.git'}"
 }
 output "zgit_clone" {
   value       = [for res in data.external.git_clone : res.result]
   description = "returns git_clone.sh result { 'git@myserver.com:user/project.git' = 'True' }"
+}
+
+output "zzlen_proj" {
+  value       = length(local.projects)
+  description = "len proj"
+}
+
+output "zzlen_clone" {
+  value       = length(data.external.git_clone)
+  description = "len clone"
 }

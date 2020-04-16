@@ -14,6 +14,7 @@ function check_deps() {
 set -e
 check_deps
 eval "$(jq -r '@sh "export DIR=\(.workdir) CLONEDIR=\(.clonedir) SSHGIT=\(.project_ssh) LOG=\(.logfile)"')"
+echo "DIR: $DIR CLONEDIR: $CLONEDIR SSHGIT:$SSHGIT" >> $LOG
 workdir=$DIR/$CLONEDIR
 mkdir -p $workdir
 cd $workdir
