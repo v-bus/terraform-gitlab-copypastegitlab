@@ -40,16 +40,16 @@ locals {
   # list of projects
   # chunklist(
   projects = flatten([for index in range(0, length(local.groups)) : [
-    for project in jsondecode(data.http.get_groups_projects[index].body) : zipmap(["full_path", "path", "project_ssh"],[project.namespace["full_path"], project.path, project.ssh_url_to_repo])
+    for project in jsondecode(data.http.get_groups_projects[index].body) : zipmap(["full_path", "path", "project_ssh"], [project.namespace["full_path"], project.path, project.ssh_url_to_repo])
     ]
   ])
 }
 data "external" "git_clone" {
-  depends_on    = [data.http.get_groups, data.http.get_groups_projects]
+  depends_on = [data.http.get_groups, data.http.get_groups_projects]
   # local.projects[i][0] - full_path (group/subgroup/../project)
   # local.projects[i][1] - path (project name)
   # local.projects[i][2] - ssh clone address (eg. git@gitlab.myserver.com:group/subgroup/project.git)
-  count = length(local.projects)
+  count   = length(local.projects)
   program = ["bash", "git_clone.sh"]
   query = {
     workdir     = "/tmp"
