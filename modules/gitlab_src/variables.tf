@@ -12,8 +12,8 @@ variable "api" {
   default     = "/api/v4/"
 }
 variable "groups" {
-    description = "required: Map of groups to be cloned"
-    default = {
+  description = "required: Map of groups to be cloned"
+  default = {
     "" = ""
   }
 }

@@ -38,23 +38,23 @@ data "http" "get_groups_projects" {
 }
 locals {
   # list of projects
-  projects = flatten([for projects in data.http.get_groups_projects : [
+  projects = setproduct(["key"], flatten([for projects in data.http.get_groups_projects : [
     for project in jsondecode(projects.body) : zipmap(["full_path", "path", "project_ssh"], [project.namespace["full_path"], project.path, project.ssh_url_to_repo])
     ]
-  ])
+  ]))
 }
 data "external" "git_clone" {
   depends_on = [data.http.get_groups, data.http.get_groups_projects]
   # local.projects[i].full_path - (group/subgroup/../project)
   # local.projects[i].path -  (project name)
   # local.projects[i].project_ssh - ssh clone address (eg. git@gitlab.myserver.com:group/subgroup/project.git)
-  count   = length(local.projects)
+  for_each = local.projects
   program = ["python", "${path.cwd}/exec/git_clone.py"]
   query = {
     workdir     = "/tmp"
-    clonedir    = local.projects[count.index].full_path
-    name        = local.projects[count.index].path
-    project_ssh = local.projects[count.index].project_ssh
+    clonedir    = each.value.full_path
+    name        = each.value.path
+    project_ssh = each.value.project_ssh
     logfile     = "${path.cwd}/git_clone.log"
   }
 }
