@@ -49,10 +49,11 @@ data "external" "git_clone" {
   # local.projects[i].path -  (project name)
   # local.projects[i].project_ssh - ssh clone address (eg. git@gitlab.myserver.com:group/subgroup/project.git)
   count   = length(local.projects)
-  program = ["bash", "git_clone.sh"]
+  program = ["python", "${path.cwd}/exec/git_clone.py"]
   query = {
     workdir     = "/tmp"
     clonedir    = local.projects[count.index].full_path
+    name        = local.projects[count.index].path
     project_ssh = local.projects[count.index].project_ssh
     logfile     = "${path.cwd}/git_clone.log"
   }

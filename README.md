@@ -29,3 +29,7 @@ curl -k --header "Authorization: Bearer $TOKEN"  https://gitlab.XXXXXXX.com/api/
 curl -k --header "Authorization: Bearer $TOKEN"  https://gitlab.XXXXXXX.com/api/v4/groups?per_page=100 | jq '.[] | "\(.id) \(.full_path)"'
 
 ```
+
+[pip install terraform_external_data](https://github.com/operatingops/terraform_external_data)
+
+[pip install json-logging](https://github.com/cloudreach/jsonlogger)
