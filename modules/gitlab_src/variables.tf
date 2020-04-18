@@ -11,9 +11,19 @@ variable "api" {
   description = "postfix API"
   default     = "/api/v4/"
 }
+variable "get_groups" {
+  description = "Flag to get list of groups to print it on output"
+  default     = true
+}
 variable "groups" {
-    description = "required: Map of groups to be cloned"
-    default = {
-    "" = ""
-  }
+  description = "required: Map of groups to be cloned"
+  default     = []
+}
+variable "perpage" {
+  description = "set number of projects to return"
+  default     = 1000
+}
+variable "log_filepath" {
+  description = "Full path to git_clone.py log filepath"
+  default     = "./git_clone.log"
 }

@@ -1,7 +1,7 @@
 output "groups" {
-  value = { for group in jsondecode(data.http.get_groups.body) :
-    group.id => group.full_path
-  }
+  value = var.get_groups ? [for group in try(jsondecode(data.http.get_groups[0].body), { "full_path" = "no groups" }) :
+    group.full_path
+  ] : ["no groups"]
   description = "returns map of goups { 'id' = 'full_path' }"
 }
 output "projects" {
@@ -11,14 +11,4 @@ output "projects" {
 output "zgit_clone" {
   value       = [for res in data.external.git_clone : res.result]
   description = "returns git_clone.sh result { 'git@myserver.com:user/project.git' = 'True' }"
-}
-
-output "zzlen_proj" {
-  value       = length(local.projects)
-  description = "len proj"
-}
-
-output "zzlen_clone" {
-  value       = length(data.external.git_clone)
-  description = "len clone"
 }

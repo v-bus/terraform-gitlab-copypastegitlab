@@ -15,46 +15,43 @@ provider "gitlab" {
 # Get ALL accessable groups with attributes (eg. id)
 #####################################################
 data "http" "get_groups" {
-  url = "${var.url}${var.api}groups?per_page=100"
+  count = var.get_groups ? 1 : 0
+  url   = "${var.url}${var.api}groups?per_page=100"
   request_headers = {
     Authorization = "Bearer ${var.token}"
   }
-}
-locals {
-  # list of groups and subgoups
-  groups = jsondecode(data.http.get_groups.body)
 }
 
 #####################################################
 # Get list of list of group PROJECTS (local.groups)
 #####################################################
-data "http" "get_groups_projects" {
-  depends_on = [data.http.get_groups]
-  count      = length(local.groups)
-  url        = "${var.url}${var.api}groups/${local.groups[count.index].id}/projects?per_page=100"
+data "http" "get_projects" {
+  url = "${var.url}${var.api}projects?pagination=keyset&per_page=${var.perpage}&order_by=id&simple=true"
+
   request_headers = {
     Authorization = "Bearer ${var.token}"
   }
 }
 locals {
-  # list of projects
-  projects = flatten([for projects in data.http.get_groups_projects : [
-    for project in jsondecode(projects.body) : zipmap(["full_path", "path", "project_ssh"], [project.namespace["full_path"], project.path, project.ssh_url_to_repo])
-    ]
-  ])
+  # list of projects and project_paths
+  _project_paths = [for project in jsondecode(data.http.get_projects.body) : project.namespace["full_path"]]
+  _projects      = [for project in jsondecode(data.http.get_projects.body) : project.ssh_url_to_repo]
+
+  # list of selected projects
+  projects = matchkeys(local._projects, local._project_paths, var.groups)
+
+  # list of selected projects paths
+  project_paths = [for project in jsondecode(data.http.get_projects.body) : project.namespace["full_path"] if contains(local.projects, project.ssh_url_to_repo)]
+
 }
 data "external" "git_clone" {
-  depends_on = [data.http.get_groups, data.http.get_groups_projects]
-  # local.projects[i].full_path - (group/subgroup/../project)
-  # local.projects[i].path -  (project name)
-  # local.projects[i].project_ssh - ssh clone address (eg. git@gitlab.myserver.com:group/subgroup/project.git)
-  count   = length(local.projects)
-  program = ["python", "${path.cwd}/exec/git_clone.py"]
+  depends_on = [data.http.get_projects]
+  count      = length(local.projects)
+  program    = ["python", "${path.cwd}/exec/git_clone.py"]
   query = {
     workdir     = "/tmp"
-    clonedir    = local.projects[count.index].full_path
-    name        = local.projects[count.index].path
-    project_ssh = local.projects[count.index].project_ssh
-    logfile     = "${path.cwd}/git_clone.log"
+    clonedir    = local.project_paths[count.index]
+    project_ssh = local.projects[count.index]
+    logfile     = var.log_filepath
   }
 }
