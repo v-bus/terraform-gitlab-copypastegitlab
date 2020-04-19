@@ -50,7 +50,7 @@ data "external" "git_clone" {
   count      = length(local.projects)
   program    = ["python", "${path.cwd}/exec/git_clone.py"]
   query = {
-    workdir     = "/tmp"
+    workdir     = var.workdir
     clonedir    = local.project_paths[count.index]
     project_ssh = local.projects[count.index]
     logfile     = var.log_filepath

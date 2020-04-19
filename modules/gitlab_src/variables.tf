@@ -27,3 +27,7 @@ variable "log_filepath" {
   description = "Full path to git_clone.py log filepath"
   default     = "./git_clone.log"
 }
+variable "workdir" {
+  description = "required: folder where all git repos will be cloned"
+  default = "/tmp"
+}
