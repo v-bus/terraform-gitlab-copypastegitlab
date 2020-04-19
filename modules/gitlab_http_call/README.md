@@ -24,7 +24,7 @@ list of maps
     "subgroup_creation_level" = "maintainer"
     "two_factor_grace_period" = 48
     "visibility" = "private"
-    "web_url" = "https://gitlab.forbiddenforchildren.com/groups/sezon"
+    "web_url" = "https://gitlab.mysite.com/groups/sezon"
   }
 ```
 
@@ -40,7 +40,7 @@ list of maps
     "default_branch" = "master"
     "description" = ""
     "forks_count" = 0
-    "http_url_to_repo" = "https://gitlab.forbiddenforchildren.com/kukukuk/frontend/tests/base.git"
+    "http_url_to_repo" = "https://gitlab.mysite.com/kukukuk/frontend/tests/base.git"
     "id" = 17
     "last_activity_at" = "2020-04-18T13:09:20.131Z"
     "name" = "base"
@@ -52,15 +52,15 @@ list of maps
       "name" = "tests"
       "parent_id" = 29
       "path" = "tests"
-      "web_url" = "https://gitlab.forbiddenforchildren.com/groups/kukukuk/frontend/tests"
+      "web_url" = "https://gitlab.mysite.com/groups/kukukuk/frontend/tests"
     }
     "path" = "base"
     "path_with_namespace" = "kukukuk/frontend/tests/base"
-    "readme_url" = "https://gitlab.forbiddenforchildren.com/kukukuk/frontend/tests/base/blob/master/README.md"
-    "ssh_url_to_repo" = "git@gitlab.forbiddenforchildren.com:kukukuk/frontend/tests/base.git"
+    "readme_url" = "https://gitlab.mysite.com/kukukuk/frontend/tests/base/blob/master/README.md"
+    "ssh_url_to_repo" = "git@gitlab.mysite.com:kukukuk/frontend/tests/base.git"
     "star_count" = 0
     "tag_list" = []
-    "web_url" = "https://gitlab.forbiddenforchildren.com/kukukuk/frontend/tests/base"
+    "web_url" = "https://gitlab.mysite.com/kukukuk/frontend/tests/base"
   }
 ```
 
