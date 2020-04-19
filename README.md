@@ -33,3 +33,5 @@ curl -k --header "Authorization: Bearer $TOKEN"  https://gitlab.XXXXXXX.com/api/
 [pip install terraform_external_data](https://github.com/operatingops/terraform_external_data)
 
 [pip install json-logging](https://github.com/cloudreach/jsonlogger)
+
+### NOTE: !@#$%^& are not supported in project names only [a-zA-Z0-9-_]
