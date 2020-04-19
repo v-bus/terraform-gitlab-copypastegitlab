@@ -16,7 +16,7 @@ provider "gitlab" {
 #####################################################
 data "http" "get_groups" {
   count = var.get_groups ? 1 : 0
-  url   = "${var.url}${var.api}groups?per_page=100"
+  url   = "${var.url}${var.api}groups?pagination=keyset&per_page=${var.perpage}&order_by=id"
   request_headers = {
     Authorization = "Bearer ${var.token}"
   }
@@ -43,6 +43,7 @@ locals {
   # list of selected projects paths
   project_paths = [for project in jsondecode(data.http.get_projects.body) : project.namespace["full_path"] if contains(local.projects, project.ssh_url_to_repo)]
 
+  # project_names = [ for project in jsondecode(data.http.get_projects.body) : project.path if contains(local.projects, project.ssh_url_to_repo)]
 }
 data "external" "git_clone" {
   depends_on = [data.http.get_projects]

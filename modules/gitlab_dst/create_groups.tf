@@ -1,6 +1,24 @@
 locals {
-  # remove empty elements
-  _groups = compact(var.groups)
+
+}
+
+#################################################################
+# Get groups to check if groups from list exists on a server
+#################################################################
+data "http" "get_groups" {
+  url = "${var.url}${var.api}groups?pagination=keyset&per_page=${var.perpage}&order_by=id"
+  request_headers = {
+    Authorization = "Bearer ${var.token}"
+  }
+}
+
+locals {
+  # remove empty elements from input variables
+  __groups = distinct(compact(concat(var.groups, [for project in var.upload_projects : values(project)[0]])))
+  # list of all fullpaths on gitlab site
+  __site_groups = [for group in jsondecode(data.http.get_groups.body) : group.full_path]
+  # list of nonexisting groups should be created
+  _groups = [for pv_group in local.__groups : pv_group if contains(local.__site_groups, pv_group) != true]
   # gitlab.com/zero_groups
   _zero_groups = distinct([for group in local._groups : split("/", group)[0]])
   # zero_groups object has parent_path attribute zero here magical 1sk2TCAb
@@ -55,4 +73,35 @@ resource "gitlab_group" "forth_level_groups" {
   name       = values(local.forth_level_groups[count.index])[0]
   path       = values(local.forth_level_groups[count.index])[0]
   parent_id  = [for third in gitlab_group.third_level_groups : third.id if third.full_path == keys(local.forth_level_groups[count.index])[0]][0]
+}
+
+
+
+
+locals {
+  zero_group_ids          = { for index in range(0, length(gitlab_group.zero_groups)) : gitlab_group.zero_groups[index].id => gitlab_group.zero_groups[index].full_path }
+  first_level_groups_ids  = { for index in range(0, length(gitlab_group.first_level_groups)) : gitlab_group.first_level_groups[index].id => gitlab_group.first_level_groups[index].full_path }
+  second_level_groups_ids = { for index in range(0, length(gitlab_group.second_level_groups)) : gitlab_group.second_level_groups[index].id => gitlab_group.second_level_groups[index].full_path }
+  third_level_groups_ids  = { for index in range(0, length(gitlab_group.third_level_groups)) : gitlab_group.third_level_groups[index].id => gitlab_group.third_level_groups[index].full_path }
+  forth_level_groups_ids  = { for index in range(0, length(gitlab_group.forth_level_groups)) : gitlab_group.forth_level_groups[index].id => gitlab_group.forth_level_groups[index].full_path }
+
+
+  # collect group ids
+  created_groups_with_ids = zipmap(
+    concat(keys(local.zero_group_ids), keys(local.first_level_groups_ids), keys(local.second_level_groups_ids), keys(local.third_level_groups_ids), keys(local.forth_level_groups_ids)),
+    concat(values(local.zero_group_ids), values(local.first_level_groups_ids), values(local.second_level_groups_ids), values(local.third_level_groups_ids), values(local.forth_level_groups_ids))
+  )
+}
+#################################################################
+# Get ALL groups to collect all ids and full_paths
+#################################################################
+data "http" "get_groups_plus" {
+  depends_on = [local.created_groups_with_ids]
+  url        = "${var.url}${var.api}groups?pagination=keyset&per_page=${var.perpage}&order_by=id"
+  request_headers = {
+    Authorization = "Bearer ${var.token}"
+  }
+}
+locals {
+  all_groups_with_id = { for group in jsondecode(data.http.get_groups_plus.body) : group.id => group.full_path }
 }

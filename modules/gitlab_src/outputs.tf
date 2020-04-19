@@ -5,7 +5,7 @@ output "groups" {
   description = "returns map of goups { 'id' = 'full_path' }"
 }
 output "projects" {
-  value       = local.projects
+  value       = [for index in range(0, length(local.projects)) : { "${local.projects[index]}" = "${local.project_paths[index]}" }]
   description = "returns list of maps of projects { 'full_path' = 'group/subroup' 'path' = 'project' 'project_ssh' = 'git@gitlab.myserver.com:group/subroup/project.git'}"
 }
 output "zgit_clone" {

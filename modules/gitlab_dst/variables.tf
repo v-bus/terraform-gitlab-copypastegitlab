@@ -28,3 +28,8 @@ variable "log_filepath" {
   description = "Full path to git_clone.py log filepath"
   default     = "./git_clone.log"
 }
+
+variable "upload_projects" {
+  description = "requiered: list of maps { project_ssh_url = project_ssh_namespace_full_path}, eg. { \"git@gitlab.mysite.com\" = \"group/subgroup\" } if project has empty project_ssh_namespace_full_path, it will be force pushed to the user owner of gitlab access token "
+  type        = list(map(string))
+}
