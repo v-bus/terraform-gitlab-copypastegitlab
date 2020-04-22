@@ -57,7 +57,7 @@ def clone_it(query):
         git_dir = os.path.join(query['workdir'], query['clonedir'])
         os.makedirs(git_dir, exist_ok = True)
         os.chdir(git_dir)
-        error_msg = subprocess.getoutput("git clone "+query['project_ssh'])
+        error_msg = subprocess.getoutput("git clone --mirror "+query['project_ssh']+" .git && git config --bool core.bare false && git branch")
     
     except ValueError as val_err:
         error_msg+="Value error {0}".format(val_err)

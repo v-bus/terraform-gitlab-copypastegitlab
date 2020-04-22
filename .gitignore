@@ -30,3 +30,5 @@ override.tf.json
 **vault*
 modules/gitlab_src/git_clone.log
 .vscode/launch.json
+modules/gitlab_dst/projects.tfvars
+modules/gitlab_dst/git_clone.log

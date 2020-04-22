@@ -19,9 +19,9 @@ variable "groups" {
   description = "required: Map of groups to be cloned"
   default     = []
 }
-variable "perpage" {
-  description = "set number of projects to return"
-  default     = 1000
+variable "project_total_number" {
+  description = "total numer of your gitlab projects"
+  default     = 303
 }
 variable "log_filepath" {
   description = "Full path to git_clone.py log filepath"
@@ -29,5 +29,5 @@ variable "log_filepath" {
 }
 variable "workdir" {
   description = "required: folder where all git repos will be cloned"
-  default = "/tmp"
+  default     = "/tmp"
 }

@@ -41,7 +41,8 @@ class StreamToLogger(object):
 
 sl = StreamToLogger(logger, logging.ERROR)
 sys.stderr = sl
-
+# sl = StreamToLogger(logger, logging.ERROR)
+# sys.stdout = sl
 
 @terraform_external_data
 def clone_it(query):
@@ -57,7 +58,7 @@ def clone_it(query):
         git_dir = os.path.join(query['workdir'], query['repodir'])
         os.chdir(git_dir)
         error_msg = subprocess.getoutput("git remote set-url origin "+query['project_ssh'])
-        error_msg += subprocess.getoutput("git push --force --all")
+        error_msg += subprocess.getoutput("git push --mirror")
     
     except ValueError as val_err:
         error_msg+="Value error {0}".format(val_err)
