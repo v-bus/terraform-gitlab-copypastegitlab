@@ -1,11 +1,4 @@
-terraform {
-  required_version = ">= 0.12"
-  required_providers {
-    gitlab   = "~> 2.6"
-    external = "~> 1.2"
-    http     = "~> 1.2"
-  }
-}
+
 
 provider "gitlab" {
   token    = var.token
@@ -26,7 +19,7 @@ data "http" "get_groups" {
 # Get list of list of group PROJECTS (local.groups)
 #####################################################
 data "http" "get_projects" {
-  count = ceil(var.project_total_number/100)
+  count = ceil(var.project_total_number / 100)
   url   = "${var.url}${var.api}projects?page=${count.index}&per_page=100"
 
   request_headers = {

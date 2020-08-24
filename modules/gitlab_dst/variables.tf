@@ -35,5 +35,5 @@ variable "upload_projects" {
 }
 variable "workdir" {
   description = "required: folder where all git repos of pushed projects are placed, var.workdir/zero_group/first_level_group/... will be used"
-  default = "/tmp"
+  default     = "/tmp"
 }
