@@ -6,7 +6,7 @@ It's happen when you didn't update gitlab for a long time and whants to migrate 
 
 ## quickstart
 
-1. install Terraform (see [project.tf](project.tf) to check required versions)
+1. install Terraform (see [versoins.tf](versions.tf) to check required versions)
 1. `git clone` this module
 1. set required variables in .tfvars file (see [variables.tf](variables.tf) file, required variables labeled as required)
 1. run `terraform init`
@@ -30,8 +30,30 @@ curl -k --header "Authorization: Bearer $TOKEN"  https://gitlab.XXXXXXX.com/api/
 
 ```
 
+## Example Usage
+
+1. As always, create and activate a venv_.
+
+```bash
+      python -m venv env
+      source env/bin/activate
+```
+
+1. Install `terraform_external_data` and `json-logging` in the env.
+
+```bash
+      pip install terraform_external_data
+      pip install json-logging
+```
+
 [pip install terraform_external_data](https://github.com/operatingops/terraform_external_data)
 
 [pip install json-logging](https://github.com/cloudreach/jsonlogger)
+
+1. Add .tfvars file with `token` and `url` to modules/gitlab_src and modules/gitlab_dst folder
+
+1. Try first `terraform apply -var-file=<your.tfvars>` to get groups array in output
+
+1. Add given groups array to .tfvars file with only that goup names you whant to clone
 
 ### NOTE: !@#$%^& are not supported in project names only [a-zA-Z0-9-_]

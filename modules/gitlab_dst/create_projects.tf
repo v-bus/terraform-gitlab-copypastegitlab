@@ -16,8 +16,8 @@ locals {
   # list of all ssh_urls and gruop path of each project on gitlab site
   _site_projects = [for project in jsondecode(data.http.get_projects.body) : project.path_with_namespace]
   # copy only nonexisting projects on gitlab site
-  _upload_projects = [for project in var.upload_projects : {keys(project)[0] = values(project)[0]} 
-     if contains(local._site_projects,"${values(project)[0]}/${replace(keys(project)[0], "/.*/([a-zA-Z0-9-_]*).git/", "$1")}") == false ]
+  _upload_projects = [for project in var.upload_projects : { keys(project)[0] = values(project)[0] }
+  if contains(local._site_projects, "${values(project)[0]}/${replace(keys(project)[0], "/.*/([a-zA-Z0-9-_]*).git/", "$1")}") == false]
 
 }
 # locals {
