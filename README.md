@@ -18,7 +18,7 @@ example
 
 ```terraform
 module "gp_copy_paste" {
-    source = "github.com/v-bus/terraform-gitlab-cpypstgitlab"
+    source = "https://github.com/v-bus/terraform-gitlab-copypastegitlab"
 }
 
 ```
